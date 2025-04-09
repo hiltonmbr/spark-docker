@@ -1,0 +1,74 @@
+services:
+  code-server:
+    image: lscr.io/linuxserver/code-server:latest
+    container_name: code-server
+    user: root
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - SUDO_PASSWORD=test
+      - DOCKER_MODS=linuxserver/mods:code-server-python3 linuxserver/mods:code-server-java11
+    volumes:
+      - ./shared-data:/config/workspace
+    ports:
+      - 8443:8443
+    restart: unless-stopped
+    networks:
+      - dev
+  spark-master:
+    image: docker.io/bitnami/spark:3.5-debian-12 #https://hub.docker.com/r/bitnami/spark
+    container_name: spark-master
+    hostname: spark-master
+    ports:
+      - 8081:8081
+      - 4040:4040
+    environment:
+      - SPARK_MODE=master
+      - SPARK_RPC_AUTHENTICATION_ENABLED=no
+      - SPARK_RPC_ENCRYPTION_ENABLED=no
+      - SPARK_LOCAL_STORAGE_ENCRYPTION_ENABLED=no
+      - SPARK_SSL_ENABLED=no
+      - SPARK_USER=spark
+      - SPARK_MASTER_WEBUI_PORT=8081
+    restart: unless-stopped
+    networks:
+      - dev
+  spark-worker-01:
+    container_name: spark-worker-01
+    image: docker.io/bitnami/spark:3.5-debian-12 #https://hub.docker.com/r/bitnami/spark
+    environment:
+      - SPARK_MODE=worker
+      - SPARK_MASTER_URL=spark://spark-master:7077
+      - SPARK_WORKER_MEMORY=2G
+      - SPARK_WORKER_CORES=6
+      - SPARK_RPC_AUTHENTICATION_ENABLED=no
+      - SPARK_RPC_ENCRYPTION_ENABLED=no
+      - SPARK_LOCAL_STORAGE_ENCRYPTION_ENABLED=no
+      - SPARK_SSL_ENABLED=no
+      - SPARK_USER=spark
+    restart: unless-stopped
+    volumes:
+      - ./shared-data:/config/workspace
+    networks:
+      - dev
+  spark-worker-02:
+    container_name: spark-worker-02
+    image: docker.io/bitnami/spark:3.5-debian-12 #https://hub.docker.com/r/bitnami/spark
+    environment:
+      - SPARK_MODE=worker
+      - SPARK_MASTER_URL=spark://spark-master:7077
+      - SPARK_WORKER_MEMORY=2G
+      - SPARK_WORKER_CORES=6
+      - SPARK_RPC_AUTHENTICATION_ENABLED=no
+      - SPARK_RPC_ENCRYPTION_ENABLED=no
+      - SPARK_LOCAL_STORAGE_ENCRYPTION_ENABLED=no
+      - SPARK_SSL_ENABLED=no
+      - SPARK_USER=spark
+    restart: unless-stopped
+    volumes:
+      - ./shared-data:/config/workspace
+    networks:
+      - dev
+networks:
+  dev:
+    driver: bridge

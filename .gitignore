@@ -1,0 +1,11 @@
+*.DS_Store
+*.gz
+.venv
+*.venv
+venv
+code-server
+*.csv
+*.txt
+*.parquet
+*.zip
+*.gz
