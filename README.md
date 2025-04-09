@@ -99,8 +99,3 @@ Contributions are welcome! Please open an issue or submit a pull request with an
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-
-## Acknowledgments
-
-- Thanks to the Apache Hadoop community for providing a robust data processing framework.
-- Special thanks to contributors and maintainers for their support and development efforts.
