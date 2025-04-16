@@ -16,7 +16,7 @@ services:
     networks:
       - dev
   spark-master:
-    image: docker.io/bitnami/spark:3.5-debian-12 #https://hub.docker.com/r/bitnami/spark
+    image: docker.io/bitnami/spark:3.5.5 #https://hub.docker.com/r/bitnami/spark
     container_name: spark-master
     hostname: spark-master
     ports:
@@ -35,7 +35,8 @@ services:
       - dev
   spark-worker-01:
     container_name: spark-worker-01
-    image: docker.io/bitnami/spark:3.5-debian-12 #https://hub.docker.com/r/bitnami/spark
+    hostname: spark-worker-01
+    image: docker.io/bitnami/spark:3.5.5 #https://hub.docker.com/r/bitnami/spark
     environment:
       - SPARK_MODE=worker
       - SPARK_MASTER_URL=spark://spark-master:7077
@@ -53,7 +54,8 @@ services:
       - dev
   spark-worker-02:
     container_name: spark-worker-02
-    image: docker.io/bitnami/spark:3.5-debian-12 #https://hub.docker.com/r/bitnami/spark
+    hostname: spark-worker-02
+    image: docker.io/bitnami/spark:3.5.5 #https://hub.docker.com/r/bitnami/spark
     environment:
       - SPARK_MODE=worker
       - SPARK_MASTER_URL=spark://spark-master:7077
